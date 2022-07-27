@@ -27,14 +27,38 @@ public class Main {
                 break;
             else if  (input.equals("1"))
                 LogInAsManager(scanner, jdbcURL);
-            
         }
+        scanner.close();
 
+    }
+
+    private static void LogInAsManager(Scanner scanner, String jdbcURL) {
+        
+        while(true){
+            System.out.println("1. Company list\n" +
+                    "2. Create a company\n" +
+                    "0. Back");
+            String input = scanner.nextLine();
+            if (input.equals("0"))
+                return;
+            else if  (input.equals("1"))
+                PrintCompanyList(jdbcURL);
+            else if (input.equals("2"))
+                CreateCompany(scanner, jdbcURL);
+        }
+    }
+
+    private static void CreateCompany(Scanner scanner, String jdbcURL) {
+
+        System.out.println("Enter the company name:");
+        String companyName = scanner.nextLine();
 
         try{
             Class.forName ("org.h2.Driver");
             Connection connection = DriverManager.getConnection(jdbcURL);
             connection.setAutoCommit(true);
+
+
             Statement st = connection.createStatement();
             st.executeUpdate("CREATE TABLE COMPANY (ID int primary key auto_increment, name varchar(250) unique not null);");
 
@@ -50,25 +74,6 @@ public class Main {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-    }
-
-    private static void LogInAsManager(Scanner scanner, String jdbcURL) {
-        
-        while(true){
-            System.out.println("1. Company list\n" +
-                    "2. Create a company\n" +
-                    "0. Back");
-            String input = scanner.nextLine();
-            if (input.equals("0"))
-                return;
-            else if  (input.equals("1"))
-                PrintCompanyList(jdbcURL);
-            else if (input.equals("2"))
-                CreateCompany(jdbcURL);
-        }
-    }
-
-    private static void CreateCompany(String jdbcURL) {
     }
 
     private static void PrintCompanyList(String jdbcURL) {
