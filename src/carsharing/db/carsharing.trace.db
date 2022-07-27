@@ -1,0 +1,6 @@
+2022-07-27 12:54:23 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "COMPANY" already exists; SQL statement:
+CREATE TABLE COMPANY (ID int primary key auto_increment, name varchar(250)); [42101-200]
+2022-07-27 13:09:29 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "COMPANY" already exists; SQL statement:
+CREATE TABLE COMPANY (ID int primary key auto_increment, name varchar(250)); [42101-200]
