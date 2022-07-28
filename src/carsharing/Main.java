@@ -7,10 +7,22 @@ public class Main {
 
     private static Scanner scanner;
     private static CompanyDao companyService;
+    private static CarDao carService;
+    private static String jdbcURL;
+
+
 
     public static void main(String[] args) {
 
-        companyService = new CompanyDaoImp(args);
+
+        jdbcURL = initialize(args);
+
+        /*create company table and get a service reference*/
+        companyService = new CompanyDaoImp(jdbcURL);
+
+        /*create car table and get a service reference*/
+        carService = new CarDaoImp(jdbcURL);
+
         scanner = new Scanner(System.in);
 
         /* Enter infinite loop */
@@ -23,6 +35,8 @@ public class Main {
             else if  (input.equals("1"))
                 LogInAsManager();
         }
+        companyService.closeTable();
+        carService.closeTable();
         scanner.close();
     }
 
@@ -38,7 +52,7 @@ public class Main {
                 return;
             }
             else if  (input.equals("1"))
-                PrintCompanyList();
+                CompanyList();
             else if (input.equals("2"))
                 CreateCompany();
         }
@@ -51,7 +65,7 @@ public class Main {
         companyService.addCompany(companyName);
     }
 
-    private static void PrintCompanyList() {
+    private static void CompanyList() {
 
         ArrayList<Company> allCompanies = companyService.getAllCompanies();
 
@@ -59,9 +73,57 @@ public class Main {
             System.out.printf("\nThe company list is empty!");
             return;
         }
-        System.out.println("\nCompany list:");
-        for(Company c : allCompanies) {
-            System.out.printf("%s. %s\n", c.getID(), c.getNAME());
+        while(true) {
+            System.out.println("\nChose a company:");
+            for(Company c : allCompanies) {
+                System.out.printf("%s. %s\n", c.getID(), c.getNAME());
+            }
+            System.out.println("0. Back");
+            String input = scanner.nextLine();
+            if(input.equals("0"))
+                return;
+            try {
+                int i = Integer.parseInt(input);
+                System.out.printf("\'%s\' company\n", allCompanies.get(i - 1).getNAME());
+                listCars(i);
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    private static void listCars(int id) {
+        
+        while(true){
+            ArrayList<Car> cars = carService.getCarsByCompanyID(id);
+            System.out.println("1. Car List");
+            System.out.println("1. Create a car");
+            System.out.println("0. Back");
+            String input = scanner.nextLine();
+            if(input.equals("0"))
+                return;
+            else if (input.equals("1"))
+                carList();
+            else if (input.equals("2"))
+                createCar();
+        }
+    }
+
+    private static void createCar() {
+    }
+
+    private static void carList() {
+    }
+
+    private static String initialize(String[] args) {
+
+        if(args.length > 1 && args[0].equals("-databaseFileName")) {
+            return "jdbc:h2:./src/carsharing/db/" + args[1];
+        }
+        else {
+            return "jdbc:h2:./src/carsharing/db/carsharing";
         }
     }
 }
