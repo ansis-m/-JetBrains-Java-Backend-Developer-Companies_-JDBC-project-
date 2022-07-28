@@ -6,9 +6,6 @@ import java.util.Scanner;
 
 public class CompanyDaoImp implements CompanyDao{
 
-
-    private static String fileName;
-    private static Scanner scanner;
     private static String jdbcURL;
     private static final String tableName = "COMPANY";
 
@@ -61,14 +58,11 @@ public class CompanyDaoImp implements CompanyDao{
     private static void initialize(String[] args) {
 
         if(args.length > 1 && args[0].equals("-databaseFileName")) {
-            fileName = args[1];
             jdbcURL = "jdbc:h2:./src/carsharing/db/" + args[1];
         }
         else {
-            fileName = "carsharing";
             jdbcURL = "jdbc:h2:./src/carsharing/db/carsharing";
         }
-        scanner = new Scanner(System.in);
     }
 
     private static void createTable() {

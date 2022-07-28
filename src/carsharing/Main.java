@@ -1,16 +1,11 @@
 package carsharing;
 
-import java.sql.*;
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.Scanner;
 
 public class Main {
 
-    private static String fileName;
     private static Scanner scanner;
-    private static String jdbcURL;
-    private static final String tableName = "COMPANY";
     private static CompanyDao companyService;
 
     public static void main(String[] args) {

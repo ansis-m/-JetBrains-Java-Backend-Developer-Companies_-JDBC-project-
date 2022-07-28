@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="CarSharingTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-07-28T07:07:10" hostname="LAPTOP-VBFHQFG2" time="0.33">
+<testsuite name="CarSharingTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-07-28T07:46:40" hostname="LAPTOP-VBFHQFG2" time="0.338">
   <properties/>
-  <testcase name="start" classname="CarSharingTest" time="0.33"/>
+  <testcase name="start" classname="CarSharingTest" time="0.338"/>
   <system-out><![CDATA[?[1;31m
 Start test 1?[0m
 1. Log in as a manager
@@ -38,7 +38,6 @@ Start test 6?[0m
 > 1
 
 The company list is empty!
-
 1. Company list
 2. Create a company
 0. Back
