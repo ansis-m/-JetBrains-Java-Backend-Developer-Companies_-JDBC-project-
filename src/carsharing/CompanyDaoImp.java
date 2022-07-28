@@ -22,11 +22,27 @@ public class CompanyDaoImp implements CompanyDao{
 
         try{
             Statement st = connection.createStatement();
+            if(tableEmpty()){
+                st.executeUpdate("ALTER TABLE " + tableName + " ALTER COLUMN id RESTART WITH 1;");
+                st = connection.createStatement();
+            }
             st.executeUpdate("INSERT INTO " + tableName + " (NAME) VALUES ('" + name + "');");
             System.out.println("The company was created!");
         }
         catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    private boolean tableEmpty() {
+
+        try {
+            Statement st = connection.createStatement();
+            ResultSet resultSet = st.executeQuery("SELECT * FROM " + tableName);
+            return !resultSet.next();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
     }
 

@@ -98,7 +98,7 @@ public class Main {
         
         while(true){
             ArrayList<Car> cars = carService.getCarsByCompanyID(id);
-            System.out.println("1. Car List");
+            System.out.println("1. Car list");
             System.out.println("2. Create a car");
             System.out.println("0. Back");
             String input = scanner.nextLine();

@@ -1,5 +1,6 @@
 [1;31m
 Start test 1[0m
+creating car table
 1. Log in as a manager
 	0. Exit
 > 0
@@ -48,8 +49,10 @@
 	0. Back
 > 1
 
-Company list:
+Chose a company:
 1. Super company
+	0. Back
+> 0
 
 1. Company list
 2. Create a company
@@ -74,16 +77,105 @@
 	0. Back
 > 1
 
-Company list:
+Chose a company:
 1. Super company
 2. Another company
 3. One more company
+	0. Back
+> 2
+
+'Another company' company
+1. Car list
+2. Create a car
+	0. Back
+[1;31m
+Start test 7[0m
+1. Log in as a manager
+	0. Exit
+> 1
 
 1. Company list
 2. Create a company
 	0. Back
-> 0
+> 2
+
+Enter the company name:
+> Car To Go
+The company was created!
+
+1. Company list
+2. Create a company
+	0. Back
+> 2
+
+Enter the company name:
+> Drive Now
+The company was created!
+
+1. Company list
+2. Create a company
+	0. Back
+> 1
+
+Chose a company:
+1. Car To Go
+2. Drive Now
+	0. Back
+> 1
+
+'Car To Go' company
+1. Car list
+2. Create a car
+	0. Back
+> 1
+The car list is empty!
 
-1. Log in as a manager
-	0. Exit
+1. Car list
+2. Create a car
+	0. Back
+> 2
+
+Enter the car name:
+> Hyundai Venue
+The car was added!
+
+1. Car list
+2. Create a car
+	0. Back
+> 2
+
+Enter the car name:
+> Maruti Suzuki Dzire
+The car was added!
+
+1. Car list
+2. Create a car
+	0. Back
+> 1
+Car list:
+1. Hyundai Venue
+2. Maruti Suzuki Dzire
+1. Car list
+2. Create a car
+	0. Back
 > 0
+
+Chose a company:
+1. Car To Go
+2. Drive Now
+	0. Back
+> 1
+
+'Car To Go' company
+1. Car list
+2. Create a car
+	0. Back
+> 2
+
+Enter the car name:
+> 1
+The car was added!
+
+1. Car list
+2. Create a car
+	0. Back

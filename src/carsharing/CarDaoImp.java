@@ -28,7 +28,7 @@ public class CarDaoImp implements CarDao{
             ResultSet resultSet = metaData.getTables(null, null, tableName, new String[] {"TABLE"});
             if(!resultSet.next()){
                 System.out.println("creating car table");
-                st.executeUpdate("CREATE TABLE " + tableName + " (ID int auto_increment primary key, NAME varchar(250) unique not null, COMPANY_ID INT,\n" +
+                st.executeUpdate("CREATE TABLE " + tableName + " (ID int auto_increment primary key, NAME varchar(250) unique not null, COMPANY_ID INT not null,\n" +
                         " CONSTRAINT xxx FOREIGN KEY (COMPANY_ID)\n" +
                         "    REFERENCES COMPANY(ID) );");
             }
@@ -47,7 +47,6 @@ public class CarDaoImp implements CarDao{
         try{
             Statement st = connection.createStatement();
             st.executeUpdate("INSERT INTO " + tableName + " (NAME, COMPANY_ID) VALUES ('" + name + "', " + id + ");");
-            System.out.println("The car was created!");
         }
         catch (SQLException e) {
             e.printStackTrace();
@@ -57,7 +56,19 @@ public class CarDaoImp implements CarDao{
 
     @Override
     public ArrayList<Car> getAllCars() {
-        return null;
+        ArrayList<Car> result = new ArrayList<>();
+        try{
+            Statement st = connection.createStatement();
+            ResultSet resultSet = st.executeQuery("SELECT * FROM " + tableName + ";");
+            while(resultSet.next()){
+                result.add(new Car(resultSet.getString("ID"), resultSet.getString("NAME"), (int) resultSet.getLong("COMPANY_ID")));
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return result;
+        }
+        return result;
     }
 
     @Override
@@ -65,7 +76,7 @@ public class CarDaoImp implements CarDao{
         ArrayList<Car> result = new ArrayList<>();
         try{
             Statement st = connection.createStatement();
-            ResultSet resultSet = st.executeQuery("SELECT * FROM " + tableName + ";");
+            ResultSet resultSet = st.executeQuery("SELECT * FROM " + tableName + " WHERE COMPANY_ID = " + id + ";");
             while(resultSet.next()){
                 result.add(new Car(resultSet.getString("ID"), resultSet.getString("NAME"), (int) resultSet.getLong("COMPANY_ID")));
             }
