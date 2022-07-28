@@ -84,7 +84,7 @@ public class Main {
                 return;
             try {
                 int i = Integer.parseInt(input);
-                System.out.printf("\'%s\' company\n", allCompanies.get(i - 1).getNAME());
+                System.out.printf("\n\'%s\' company\n", allCompanies.get(i - 1).getNAME());
                 listCars(i);
             }
             catch (Exception e){
@@ -99,22 +99,42 @@ public class Main {
         while(true){
             ArrayList<Car> cars = carService.getCarsByCompanyID(id);
             System.out.println("1. Car List");
-            System.out.println("1. Create a car");
+            System.out.println("2. Create a car");
             System.out.println("0. Back");
             String input = scanner.nextLine();
             if(input.equals("0"))
                 return;
             else if (input.equals("1"))
-                carList();
+                carList(cars);
             else if (input.equals("2"))
-                createCar();
+                createCar(id);
         }
     }
 
-    private static void createCar() {
+    private static void createCar(int id) {
+
+        System.out.println("\nEnter the car name:");
+        String name = scanner.nextLine();
+        try{
+            carService.addCar(name, id);
+            System.out.println("The car was added!\n");
+        }
+        catch (Exception e){
+            System.out.println("saving car failed!");
+            e.printStackTrace();
+        }
+
     }
 
-    private static void carList() {
+    private static void carList(ArrayList<Car> cars) {
+        if(cars == null || cars.size() == 0){
+            System.out.println("The car list is empty!\n");
+            return;
+        }
+        System.out.println("Car list:");
+        for(Car c : cars){
+            System.out.printf("%s. %s\n", c.getID(), c.getName());
+        }
     }
 
     private static String initialize(String[] args) {
