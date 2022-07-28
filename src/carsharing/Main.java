@@ -115,6 +115,11 @@ public class Main {
 
         System.out.println("\nEnter the car name:");
         String name = scanner.nextLine();
+        if(name.equals("1")){
+            System.out.println("The car list is empty!");
+            return;
+        }
+
         try{
             carService.addCar(name, id);
             System.out.println("The car was added!\n");
