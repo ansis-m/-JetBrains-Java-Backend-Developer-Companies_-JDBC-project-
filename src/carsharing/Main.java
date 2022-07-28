@@ -1,24 +1,33 @@
 package carsharing;
 
 import java.sql.*;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class Main {
+
+    private static String fileName;
+    private static Scanner scanner;
+    private static String jdbcURL;
+    private static final String tableName = "COMPANY";
+
 
     public static void main(String[] args) {
 
         /* Get commandline argument and construct database URL*/
 
-        String jdbcURL;
-        if(args.length > 1 && args[0].equals("-databaseFileName"))
+        if(args.length > 1 && args[0].equals("-databaseFileName")) {
+            fileName = args[1];
             jdbcURL = "jdbc:h2:./src/carsharing/db/" + args[1];
-        else
+        }
+        else {
+            fileName = "carsharing";
             jdbcURL = "jdbc:h2:./src/carsharing/db/carsharing";
-
+        }
 
         /* Enter infinite loop */
 
-        Scanner scanner = new Scanner(System.in);
+        scanner = new Scanner(System.in);
         while(true){
             System.out.println("1. Log in as a manager\n" +
                     "0. Exit");
@@ -26,13 +35,13 @@ public class Main {
             if (input.equals("0"))
                 break;
             else if  (input.equals("1"))
-                LogInAsManager(scanner, jdbcURL);
+                LogInAsManager();
         }
         scanner.close();
 
     }
 
-    private static void LogInAsManager(Scanner scanner, String jdbcURL) {
+    private static void LogInAsManager() {
         
         while(true){
             System.out.println("1. Company list\n" +
@@ -42,13 +51,13 @@ public class Main {
             if (input.equals("0"))
                 return;
             else if  (input.equals("1"))
-                PrintCompanyList(jdbcURL);
+                PrintCompanyList();
             else if (input.equals("2"))
-                CreateCompany(scanner, jdbcURL);
+                CreateCompany();
         }
     }
 
-    private static void CreateCompany(Scanner scanner, String jdbcURL) {
+    private static void CreateCompany() {
 
         System.out.println("Enter the company name:");
         String companyName = scanner.nextLine();
@@ -57,10 +66,17 @@ public class Main {
             Class.forName ("org.h2.Driver");
             Connection connection = DriverManager.getConnection(jdbcURL);
             connection.setAutoCommit(true);
-
-
             Statement st = connection.createStatement();
-            st.executeUpdate("CREATE TABLE COMPANY (ID int primary key auto_increment, name varchar(250) unique not null);");
+            DatabaseMetaData metaData = connection.getMetaData();
+            ResultSet resultSet = metaData.getTables(null, null, tableName, new String[] {"TABLE"});
+            if(resultSet.next()){
+                System.out.println("Table exists!!!");
+            }
+            else {
+                System.out.println("Initializing new table!!!");
+                st.executeUpdate("CREATE TABLE " + tableName + " (ID int auto_increment primary key, NAME varchar(250) unique not null);");
+            }
+            st.executeUpdate("INSERT INTO " + tableName + " (NAME) VALUES ('" + companyName + "');");
 
             //execute Q
 //            ResultSet resultSet = st.executeQuery("query_placeholder");
@@ -76,6 +92,6 @@ public class Main {
         }
     }
 
-    private static void PrintCompanyList(String jdbcURL) {
+    private static void PrintCompanyList() {
     }
 }
