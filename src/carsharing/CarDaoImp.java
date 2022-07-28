@@ -62,7 +62,19 @@ public class CarDaoImp implements CarDao{
 
     @Override
     public ArrayList<Car> getCarsByCompanyID(int id) {
-        return null;
+        ArrayList<Car> result = new ArrayList<>();
+        try{
+            Statement st = connection.createStatement();
+            ResultSet resultSet = st.executeQuery("SELECT * FROM " + tableName + ";");
+            while(resultSet.next()){
+                result.add(new Car(resultSet.getString("ID"), resultSet.getString("NAME"), (int) resultSet.getLong("COMPANY_ID")));
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return result;
+        }
+        return result;
     }
 
     @Override
