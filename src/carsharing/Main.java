@@ -1,6 +1,7 @@
 package carsharing;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -10,25 +11,14 @@ public class Main {
     private static Scanner scanner;
     private static String jdbcURL;
     private static final String tableName = "COMPANY";
-
+    private static CompanyDao companyService;
 
     public static void main(String[] args) {
 
-        /* Get commandline argument and construct database URL*/
-        if(args.length > 1 && args[0].equals("-databaseFileName")) {
-            fileName = args[1];
-            jdbcURL = "jdbc:h2:./src/carsharing/db/" + args[1];
-        }
-        else {
-            fileName = "carsharing";
-            jdbcURL = "jdbc:h2:./src/carsharing/db/carsharing";
-        }
-
-        /* Initialize the database */
-        createTable();
+        companyService = new CompanyDaoImp(args);
+        scanner = new Scanner(System.in);
 
         /* Enter infinite loop */
-        scanner = new Scanner(System.in);
         while(true){
             System.out.println("1. Log in as a manager\n" +
                     "0. Exit");
@@ -39,28 +29,6 @@ public class Main {
                 LogInAsManager();
         }
         scanner.close();
-    }
-
-    private static void createTable() {
-
-        try{
-            Class.forName ("org.h2.Driver");
-            Connection connection = DriverManager.getConnection(jdbcURL);
-            connection.setAutoCommit(true);
-            Statement st = connection.createStatement();
-            /* Check if table exists. If it doesn't create it. */
-            DatabaseMetaData metaData = connection.getMetaData();
-            ResultSet resultSet = metaData.getTables(null, null, tableName, new String[] {"TABLE"});
-            if(!resultSet.next()){
-                st.executeUpdate("CREATE TABLE " + tableName + " (ID int auto_increment primary key, NAME varchar(250) unique not null);");
-            }
-            connection.close();
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
     }
 
     private static void LogInAsManager() {
@@ -85,47 +53,20 @@ public class Main {
 
         System.out.println("\nEnter the company name:");
         String companyName = scanner.nextLine();
-
-        try{
-            Class.forName ("org.h2.Driver");
-            Connection connection = DriverManager.getConnection(jdbcURL);
-            connection.setAutoCommit(true);
-            Statement st = connection.createStatement();
-            st.executeUpdate("INSERT INTO " + tableName + " (NAME) VALUES ('" + companyName + "');");
-            System.out.println("The company was created!");
-            connection.close();
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+        companyService.addCompany(companyName);
     }
 
     private static void PrintCompanyList() {
 
-        try{
-            Class.forName ("org.h2.Driver");
-            Connection connection = DriverManager.getConnection(jdbcURL);
-            connection.setAutoCommit(true);
-            Statement st = connection.createStatement();
-            ResultSet resultSet = st.executeQuery("SELECT * FROM " + tableName + ";");
-            if(resultSet.next()) {
-                System.out.println("\nCompany list:");
-                System.out.printf("%s. %s", resultSet.getString("ID"), resultSet.getString("NAME"));
-                while(resultSet.next()){
-                    System.out.printf("\n%s. %s", resultSet.getString("ID"), resultSet.getString("NAME"));
-                }
-            }
-            else
-                System.out.printf("\nThe company list is empty!");
-            System.out.println();
-            connection.close();
+        ArrayList<Company> allCompanies = companyService.getAllCompanies();
+
+        if(allCompanies.size() == 0){
+            System.out.printf("\nThe company list is empty!");
+            return;
         }
-        catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+        System.out.println("\nCompany list:");
+        for(Company c : allCompanies) {
+            System.out.printf("%s. %s\n", c.getID(), c.getNAME());
         }
     }
 }
