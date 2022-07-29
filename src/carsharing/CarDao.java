@@ -7,4 +7,6 @@ public interface CarDao {
     ArrayList<Car> getAllCars();
     ArrayList<Car> getCarsByCompanyID(int id);
     void closeTable();
+
+    void dropTable();
 }

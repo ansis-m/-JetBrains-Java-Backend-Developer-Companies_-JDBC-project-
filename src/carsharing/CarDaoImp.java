@@ -27,7 +27,6 @@ public class CarDaoImp implements CarDao{
             DatabaseMetaData metaData = connection.getMetaData();
             ResultSet resultSet = metaData.getTables(null, null, tableName, new String[] {"TABLE"});
             if(!resultSet.next()){
-                System.out.println("creating car table");
                 st.executeUpdate("CREATE TABLE " + tableName + " (ID int auto_increment primary key, NAME varchar(250) unique not null, COMPANY_ID INT not null,\n" +
                         " CONSTRAINT xxx FOREIGN KEY (COMPANY_ID)\n" +
                         "    REFERENCES COMPANY(ID) );");
@@ -97,5 +96,17 @@ public class CarDaoImp implements CarDao{
         catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void dropTable() {
+        try{
+            Statement st = connection.createStatement();
+            st.execute("DROP TABLE " + tableName + ";");
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        openTable();
     }
 }
