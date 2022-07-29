@@ -1,7 +1,9 @@
 package carsharing;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Set;
 
 public class Main {
 
@@ -84,6 +86,8 @@ public class Main {
 
     private static void customerPage(String customerId) {
 
+        boolean returned = false;
+
         while(true) {
             Customer thisCustomer = customerService.getCustomerByID(customerId);
             //System.out.println("customer info: " + thisCustomer.getID() + "  " + thisCustomer.getName() + "  " + thisCustomer.getRentedCarID());
@@ -101,8 +105,16 @@ public class Main {
                 return;
             else if(input.equals("1"))
                 choseCompany(customerId);
-            else if(input.equals("2"))
-                returnCar(customerId);
+            else if(input.equals("2")) {
+                if(!returned){
+                    customerService.returnCar(customerId);
+                    System.out.println("You've returned a rented car!");
+                    returned = true;
+                }
+                else
+                    System.out.println("You've returned a rented car!");
+            }
+
             else if(input.equals("3")) {
                 Car rentedCar = carService.getCarByID(String.valueOf(thisCustomer.getRentedCarID()));
                 Company thisCompany = companyService.getCompanyByID(rentedCar.getCompanyID());
@@ -113,12 +125,6 @@ public class Main {
             }
 
         }
-    }
-
-    private static void myRentedCar(String customerId) {
-    }
-
-    private static void returnCar(String customerId) {
     }
 
     private static void choseCompany(String customerId) {
@@ -143,6 +149,10 @@ public class Main {
 
         try {
             ArrayList<Car> availableCars =  carService.getCarsByCompanyID(Integer.parseInt(companyID));
+            Set<Integer> rentedCars = new HashSet<>();
+            for(Customer c : customerService.getAllCustomers())
+                rentedCars.add(c.getRentedCarID());
+            availableCars.removeIf(x -> rentedCars.contains(Integer.parseInt(x.getID())));
             System.out.println("\nChoose a car:");
             for(Car c : availableCars)
                 System.out.printf("%s. %s\n", c.getID(), c.getName());

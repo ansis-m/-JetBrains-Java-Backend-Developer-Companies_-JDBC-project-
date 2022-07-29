@@ -88,11 +88,6 @@ public class CustomerDaoImp implements CustomerDao{
     }
 
     @Override
-    public ArrayList<Customer> getCustomers() {
-        return null;
-    }
-
-    @Override
     public String getJdbcURL() {
         return null;
     }
@@ -122,6 +117,18 @@ public class CustomerDaoImp implements CustomerDao{
         try{
             Statement st = connection.createStatement();
             st.executeUpdate("UPDATE " + tableName + " SET RENTED_CAR_ID=" + Integer.parseInt(carID) + " WHERE ID=" + customerId + ";");
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void returnCar(String customerId) {
+
+        try{
+            Statement st = connection.createStatement();
+            st.executeUpdate("UPDATE " + tableName + " SET RENTED_CAR_ID = NULL WHERE ID=" + customerId + ";");
         }
         catch (SQLException e) {
             e.printStackTrace();
