@@ -1,0 +1,3 @@
+2022-07-29 14:16:43 jdbc[26]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CUSTOMERSET" not found; SQL statement:
+UPDATE CUSTOMERSET RENTED_CAR_ID=1 WHERE ID=1; [42102-200]

@@ -12,4 +12,6 @@ public interface CustomerDao {
     void closeTable();
 
     Customer getCustomerByID(String customerId);
+
+    void rentCar(String customerId, String companyID, String carID);
 }

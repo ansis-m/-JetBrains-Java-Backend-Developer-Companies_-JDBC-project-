@@ -115,4 +115,16 @@ public class CustomerDaoImp implements CustomerDao{
         }
         return null;
     }
+
+    @Override
+    public void rentCar(String customerId, String companyID, String carID) {
+
+        try{
+            Statement st = connection.createStatement();
+            st.executeUpdate("UPDATE " + tableName + " SET RENTED_CAR_ID=" + Integer.parseInt(carID) + " WHERE ID=" + customerId + ";");
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

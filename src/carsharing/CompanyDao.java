@@ -8,4 +8,6 @@ public interface CompanyDao {
     ArrayList<Company> getAllCompanies();
     ArrayList<Car> getCars();
     void closeTable();
+
+    Company getCompanyByID(int companyID);
 }

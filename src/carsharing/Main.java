@@ -84,10 +84,9 @@ public class Main {
 
     private static void customerPage(String customerId) {
 
-        Customer thisCustomer = customerService.getCustomerByID(customerId);
-        System.out.println("customer info: " + thisCustomer.getID() + "  " + thisCustomer.getName() + "  " + thisCustomer.getRentedCarID());
-
         while(true) {
+            Customer thisCustomer = customerService.getCustomerByID(customerId);
+            //System.out.println("customer info: " + thisCustomer.getID() + "  " + thisCustomer.getName() + "  " + thisCustomer.getRentedCarID());
             System.out.println("1. Rent a car\n" +
                     "2. Return a rented car\n" +
                     "3. My rented car\n" +
@@ -104,8 +103,15 @@ public class Main {
                 choseCompany(customerId);
             else if(input.equals("2"))
                 returnCar(customerId);
-            else if(input.equals("3"))
-                myRentedCar(customerId);
+            else if(input.equals("3")) {
+                Car rentedCar = carService.getCarByID(String.valueOf(thisCustomer.getRentedCarID()));
+                Company thisCompany = companyService.getCompanyByID(rentedCar.getCompanyID());
+                System.out.println("\nYou rented car:");
+                System.out.println(rentedCar.getName());
+                System.out.println("Company:");
+                System.out.println(thisCompany.getNAME() + "\n");
+            }
+
         }
     }
 
@@ -126,8 +132,10 @@ public class Main {
 
             if (input.equals("0"))
                 return;
-            else
+            else {
                 pickCar(customerId, input);
+                return;
+            }
         }
     }
 
@@ -141,12 +149,24 @@ public class Main {
             System.out.println("0. Back");
 
             String input = scanner.nextLine();
+            if(input.equals("0"))
+                return;
+            else
+                rentCar(customerId, companyID, input);
         }
         catch (Exception e) {
             System.out.println("Bad input!!!");
             e.printStackTrace();
             return;
         }
+    }
+
+    private static void rentCar(String customerId, String companyID, String carID) {
+
+        customerService.rentCar(customerId, companyID, carID);
+        Car car = carService.getCarByID(carID);
+
+        System.out.println("You rented '" + car.getName() + "'");
     }
 
     private static void LogInAsManager() {

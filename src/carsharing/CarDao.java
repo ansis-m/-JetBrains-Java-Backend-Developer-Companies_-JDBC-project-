@@ -9,4 +9,8 @@ public interface CarDao {
     void closeTable();
 
     void dropTable();
+
+    Car getCarByID(String id);
+
+    int getCompanyIDfromCarID(int rentedCarID);
 }

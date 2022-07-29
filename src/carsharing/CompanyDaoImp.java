@@ -102,4 +102,19 @@ public class CompanyDaoImp implements CompanyDao{
             e.printStackTrace();
         }
     }
+
+    @Override
+    public Company getCompanyByID(int companyID) {
+
+        try{
+            Statement st = connection.createStatement();
+            ResultSet resultSet = st.executeQuery("SELECT * FROM " + tableName + " WHERE ID=" + companyID + ";");
+            resultSet.next();
+            return new Company(resultSet.getString("ID"), resultSet.getString("NAME"));
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
