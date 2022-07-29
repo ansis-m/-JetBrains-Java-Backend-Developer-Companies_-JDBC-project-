@@ -92,10 +92,6 @@ public class CompanyDaoImp implements CompanyDao{
         }
     }
 
-    public String getJdbcURL() {
-        return jdbcURL;
-    }
-
     @Override
     public void closeTable() {
 
