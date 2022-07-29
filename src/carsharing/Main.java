@@ -96,8 +96,56 @@ public class Main {
             String input = scanner.nextLine();
             if(thisCustomer.getRentedCarID() == 0 && (input.equals("3")|| input.equals("2")))
                 System.out.println("\nYou didn't rent a car!\n");
+            else if (thisCustomer.getRentedCarID() != 0 && input.equals("1"))
+                System.out.println("\nYou've already rented a car!\n");
+            else if(input.equals("0"))
+                return;
+            else if(input.equals("1"))
+                choseCompany(customerId);
+            else if(input.equals("2"))
+                returnCar(customerId);
+            else if(input.equals("3"))
+                myRentedCar(customerId);
+        }
+    }
+
+    private static void myRentedCar(String customerId) {
+    }
+
+    private static void returnCar(String customerId) {
+    }
+
+    private static void choseCompany(String customerId) {
+        while(true) {
+            ArrayList<Company> companies = companyService.getAllCompanies();
+            System.out.println("\nChoose a company:");
+            for(Company c : companies)
+                System.out.printf("%s. %s\n", c.getID(), c.getNAME());
+            System.out.println("0. Back");
+            String input = scanner.nextLine();
+
+            if (input.equals("0"))
+                return;
             else
-                break;
+                pickCar(customerId, input);
+        }
+    }
+
+    private static void pickCar(String customerId, String companyID) {
+
+        try {
+            ArrayList<Car> availableCars =  carService.getCarsByCompanyID(Integer.parseInt(companyID));
+            System.out.println("\nChoose a car:");
+            for(Car c : availableCars)
+                System.out.printf("%s. %s\n", c.getID(), c.getName());
+            System.out.println("0. Back");
+
+            String input = scanner.nextLine();
+        }
+        catch (Exception e) {
+            System.out.println("Bad input!!!");
+            e.printStackTrace();
+            return;
         }
     }
 
